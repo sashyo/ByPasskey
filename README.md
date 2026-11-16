@@ -1,5 +1,5 @@
-<p align="center"><img src="logo.svg" alt="Pass the Keys" width="170"></p>
-<h1 align="center">Pass the Keys</h1>
+<p align="center"><img src="logo.png" alt="Pass the Parcel - passkey session theft demo" width="420"></p>
+<h1 align="center">PassTheParcel</h1>
 <p align="center"><b>Passkey login-takeover: the exploit and the fix</b></p>
 
 A passkey sign-in on a **compromised login page** can be relayed so an attacker ends up logged in
