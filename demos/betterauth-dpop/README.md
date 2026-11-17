@@ -1,15 +1,15 @@
-# The fix: Better Auth + the `dpop` extension
+# The fix: The `dpop` extension
 
-A [Better Auth](https://better-auth.com) app whose `dpop` plugin ([dpop-plugin.mjs](dpop-plugin.mjs))
+An authentication app whose `dpop` plugin ([dpop-plugin.mjs](dpop-plugin.mjs))
 adds the sender-constraining WebAuthn extension. The authenticator mints a fresh per-session key
 `SK`, names `SK_pub` inside the signed `authenticatorData`, and the plugin binds the Better Auth
 session to `jkt = thumbprint(SK_pub)` and requires a per-request proof signed by `SK`.
 
-This is the **fix** half of the project; the exploit is its own Better Auth app
+This is the **fix** half of the project; the exploit is its own app
 ([../betterauth-exploit/](../betterauth-exploit/), `npm run exploit`). Run the fix with the same
 relay and it fails.
 
-> No Docker, no database, no native modules. In-memory store; **restarting the server wipes all
+> No database, no native modules. In-memory store; **restarting the server wipes all
 > accounts and passkeys** - see the note below. Authorized demo use only.
 
 ## Run
@@ -18,9 +18,9 @@ relay and it fails.
 npm run fix
 ```
 
-Starts three roles on three hosts (all resolve to `127.0.0.1` in the browser):
+Starts three roles on three hosts (all resolve to `localhost` in the browser):
 
-- **victim** `http://victim.localhost:1521/login` - Acme, Better Auth mounted at `/api/auth`
+- **victim** `http://victim.localhost:1521/login` - Acme, Auth mounted at `/api/auth`
 - **attacker** `http://attacker.localhost:1523/attacker` - attacker site, dead-drop, `/api/auth` proxy
 - **authenticator** `http://authenticator.localhost:1525` - the simulated extended authenticator (iframe origin)
 
