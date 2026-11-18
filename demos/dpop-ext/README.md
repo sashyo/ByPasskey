@@ -27,7 +27,7 @@ is sealed in the victim's authenticator) and cannot swap in its own key (it ride
 
 ## Modeling note
 
-Real browsers do not implement `dpop`, so the extended authenticator is **simulated as a page
+Real browsers authenticators (e.g. Passkey) do not implement `dpop`, so the extended authenticator is **simulated as a page
 served from a separate origin** ([public/authenticator.html](public/authenticator.html)),
 embedded as an iframe. Same-origin policy makes its keys unreadable to the relying-party page,
 which can only drive it over `postMessage` - the stand-in for an authenticator's hardware
@@ -37,17 +37,12 @@ browser/authenticator implementation.
 ## Run
 
 ```bash
-cd dpop-ext
-ROLE=victim        PORT=1521 node server.mjs
-ROLE=attacker      PORT=1523 VICTIM_ORIGIN=http://victim.localhost:1521 node server.mjs
-ROLE=authenticator PORT=1525 node server.mjs
-# open http://victim.localhost:1521/login  (sign in works; "Simulate compromised page" stays locked)
+npm run exploit
 ```
 
-(Or just `npm run fix` from the repo root, which starts all three. The victim, attacker, and
-authenticator run on `victim.localhost`, `attacker.localhost`, and `authenticator.localhost`: same
+The victim, attacker, and authenticator run on `victim.localhost`, `attacker.localhost`, and `authenticator.localhost`: same
 machine, different hosts, so the authenticator's keys sit on a separate origin from the RP page and
-the attacker gets its own cookie jar. All three resolve to `127.0.0.1` in the browser.)
+the attacker gets its own cookie jar. All three resolve to `127.0.0.1` in the browser.
 
 ## Checks
 
