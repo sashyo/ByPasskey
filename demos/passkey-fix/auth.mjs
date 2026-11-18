@@ -1,4 +1,4 @@
-// Better Auth for the unified demo: one app, one toggle. The `dpop` plugin (./dpop-plugin.mjs)
+// Server for the unified demo: one app, one toggle. The `dpop` plugin (./dpop-plugin.mjs)
 // adds the sender-constraining WebAuthn extension. DPOP_ENFORCE flips the demo:
 //   DPOP_ENFORCE=0  -> vulnerable: a relayed passkey login mints a usable session (takeover).
 //   DPOP_ENFORCE=1  -> fixed: the session is dpop-bound and the relayed session is inert.

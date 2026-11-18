@@ -1,5 +1,5 @@
-// Headless model of the Better Auth `dpop` plugin. No HTTP server and no browser: it drives the
-// Better Auth instance via auth.handler() with an authenticator emulated in Node, for BOTH toggle
+// Headless model of the `dpop` plugin. No HTTP server and no browser: it drives the
+// server instance via auth.handler() with an authenticator emulated in Node, for BOTH toggle
 // modes.
 //   enforce=false (exploit): a relayed assertion mints a session that /dpop/me accepts -> TAKEOVER.
 //   enforce=true  (fix):     the session is dpop-bound; /dpop/me needs an SK proof the attacker
@@ -105,7 +105,7 @@ async function runFix() {
   const ab = (await attacker.call('/dpop/login/begin', { method: 'POST' })).json;    // attacker's ceremony
   const as = await victim.loginAssert(ab.publicKey.challenge);                        // victim signs it
   const af = await attacker.call('/dpop/login/finish', { method: 'POST', body: { assertion: as.assertion, passkeyToken: ab.passkeyToken } });
-  check(af.json?.ok, '2 relay: attacker mints a Better Auth session');
+  check(af.json?.ok, '2 relay: attacker mints a session');
   const r1 = await attacker.call('/dpop/me');                                         // no proof
   check(r1.status === 401, '2 relay: /dpop/me refuses with no proof  -> ' + r1.json?.error);
   const evil = await newAuthenticator();

@@ -1,9 +1,9 @@
-// One Better Auth app, three roles, one toggle. The `dpop` plugin (./dpop-plugin.mjs) adds the
+// One app, three roles, one toggle. The `dpop` plugin (./dpop-plugin.mjs) adds the
 // sender-constraining WebAuthn extension; DPOP_ENFORCE flips exploit vs fix (see auth.mjs).
 //
-//   ROLE=victim        PORT=1521  Acme on victim.localhost: /login, Better Auth at /api/auth.
+//   ROLE=victim        PORT=1521  Acme on victim.localhost: /login, the server at /api/auth.
 //   ROLE=attacker      PORT=1523  attacker.localhost: /attacker + dead-drop, and an /api/auth proxy
-//                                 to the victim Better Auth (Host/Origin rewritten).
+//                                 to the victim server (Host/Origin rewritten).
 //   ROLE=authenticator PORT=1525  authenticator.localhost: the simulated extended authenticator
 //                                 (separate origin, embedded as an iframe by the RP page).
 //
@@ -34,7 +34,7 @@ const cors = (res) => {
   res.setHeader('access-control-allow-credentials', 'true');
 };
 
-// Attacker reverse proxy to the victim's Better Auth, Host/Origin rewritten so the trusted-origin
+// Attacker reverse proxy to the victim's server, Host/Origin rewritten so the trusted-origin
 // check passes. Connect over loopback so Node need not resolve the *.localhost name.
 function proxy(req, res) {
   const target = new URL(VICTIM_ORIGIN);
@@ -78,7 +78,7 @@ async function start() {
       if (pth === '/' || pth === '/attacker') return serveFile(res, 'attacker.html');
       if (pth === '/passkey-provider.js') return serveFile(res, 'passkey-provider.js', 'text/javascript');
       if (pth.startsWith('/x/')) return deadDrop(req, res, pth);
-      return proxy(req, res); // /api/auth/* -> victim Better Auth
+      return proxy(req, res); // /api/auth/* -> victim server
     }
 
     // ---- victim RP ----
@@ -98,7 +98,7 @@ async function start() {
   server.on('error', (e) => {
     if (e.code === 'EADDRINUSE') {
       console.error(`Port ${PORT} is already in use - an earlier demo server is probably still running on it.`);
-      console.error(`Stop it and retry:  pkill -f betterauth-dpop   (or free port ${PORT} yourself)`);
+      console.error(`Stop it and retry:  pkill -f passkey-fix   (or free port ${PORT} yourself)`);
       process.exit(1);
     }
     throw e;
@@ -107,7 +107,7 @@ async function start() {
   const HOST = { victim: 'victim.localhost', attacker: 'attacker.localhost', authenticator: 'authenticator.localhost' }[ROLE];
   server.listen(PORT, () => {
     if (process.env.QUIET === '1') return;
-    console.log(`betterauth-dpop ${ROLE} on http://${HOST}:${PORT}  (RP ${VICTIM_ORIGIN})`);
+    console.log(`passkey-fix ${ROLE} on http://${HOST}:${PORT}  (RP ${VICTIM_ORIGIN})`);
   });
 }
 start();

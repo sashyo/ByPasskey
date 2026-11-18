@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Acme Workspace (Better Auth + dpop)</title>
+<title>Acme Workspace (dpop)</title>
 <style>
   :root { --bg:#f6f7f9; --card:#fff; --ink:#0d1117; --muted:#667085; --line:#e4e7ec; --brand:#0a7c42; }
   * { box-sizing: border-box; }
@@ -35,12 +35,12 @@
 </head>
 <body>
 <div class="card">
-  <div class="brand"><div class="logo"></div> Acme Workspace <span style="font-weight:500;color:var(--muted);font-size:13px">· Better Auth</span></div>
+  <div class="brand"><div class="logo"></div> Acme Workspace</div>
   <div id="mode" class="mode on">checking mode…</div>
 
   <div id="login">
     <h1>Sign in</h1>
-    <p class="sub">Passkey login on Better Auth, with the <b>dpop</b> plugin adding a per-session key.</p>
+    <p class="sub">Passkey login with the <b>dpop</b> plugin adding a per-session key.</p>
     <button id="go">Sign in with passkey</button>
     <button id="evil" class="evil" title="Models an XSS'd page relaying your signature to the attacker">Simulate compromised page (relay my sign-in)</button>
     <div id="status" class="status"></div>
@@ -60,7 +60,7 @@
     <div class="pill" id="hjkt"></div>
   </div>
 
-  <div class="foot">Better Auth session &middot; sender-constrained by the authenticator-held key</div>
+  <div class="foot">Session &middot; sender-constrained by the authenticator-held key</div>
 </div>
 
 <script type="module">

@@ -1,9 +1,8 @@
-// A Better Auth plugin that adds the `dpop` WebAuthn extension (see ../dpop-ext/SPEC.md) to Better
-// Auth. The authenticator mints a fresh per-session key SK and names SK_pub inside the signed
-// authenticatorData; this plugin binds the Better Auth session to jkt = thumbprint(SK_pub) and
+// A plugin that adds the `dpop` WebAuthn extension (see ../dpop-ext/SPEC.md) to the auth server. The authenticator mints a fresh per-session key SK and names SK_pub inside the signed
+// authenticatorData; this plugin binds the session to jkt = thumbprint(SK_pub) and
 // requires a per-request proof signed by SK on the protected route.
 //
-// Better Auth owns users and sessions; this plugin adds the sender-constraint. Better Auth's
+// the auth library owns users and sessions; this plugin adds the sender-constraint. The server's
 // built-in passkey plugin can't be used for this: it verifies real browser WebAuthn via
 // @simplewebauthn, and no real browser/authenticator implements the dpop extension, so the demo
 // drives a simulated separate-origin authenticator (public/authenticator.html).
@@ -94,7 +93,7 @@ export const dpop = (opts = {}) => {
         return ctx.json({ ok: true });
       }),
 
-      // ---- login: verify the assertion, bind the Better Auth session to the signed SK ----
+      // ---- login: verify the assertion, bind the session to the signed SK ----
       dpopLoginBegin: createAuthEndpoint('/dpop/login/begin', { method: 'POST' }, async (ctx) => {
         const challenge = b64url(randomBytes(32));
         const passkeyToken = issue('login', challenge);

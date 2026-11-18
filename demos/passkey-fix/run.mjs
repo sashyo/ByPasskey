@@ -1,4 +1,4 @@
-// The fix app: one Better Auth app with the `dpop` plugin enforced. Sign in works; a relayed
+// The fix app: one app with the `dpop` plugin enforced. Sign in works; a relayed
 // sign-in lands "captured, but locked". Starts the victim RP, the attacker site, and the
 // separate-origin authenticator together. (The exploit is its own app: `npm run exploit`.)
 import { spawn } from 'node:child_process';

@@ -2,11 +2,11 @@
 
 An authentication app whose `dpop` plugin ([dpop-plugin.mjs](dpop-plugin.mjs))
 adds the sender-constraining WebAuthn extension. The authenticator mints a fresh per-session key
-`SK`, names `SK_pub` inside the signed `authenticatorData`, and the plugin binds the Better Auth
+`SK`, names `SK_pub` inside the signed `authenticatorData`, and the plugin binds the session
 session to `jkt = thumbprint(SK_pub)` and requires a per-request proof signed by `SK`.
 
 This is the **fix** half of the project; the exploit is its own app
-([../betterauth-exploit/](../betterauth-exploit/), `npm run exploit`). Run the fix with the same
+([../passkey-exploit/](../passkey-exploit/), `npm run exploit`). Run the fix with the same
 relay and it fails.
 
 > No database, no native modules. In-memory store; **restarting the server wipes all
@@ -37,19 +37,19 @@ replaces the authenticator's credential, so there is never a stale one).
 
 ## Why a custom plugin and a simulated authenticator
 
-Better Auth's built-in passkey plugin verifies **real** browser WebAuthn via `@simplewebauthn`, and
+the built-in passkey plugin verifies **real** browser WebAuthn via `@simplewebauthn`, and
 no real browser or authenticator implements a `dpop` extension that mints and names a per-session
 key. So the demo drives a **simulated** authenticator served from its own origin
 ([public/authenticator.html](public/authenticator.html)), embedded as an iframe; same-origin policy
 keeps its keys unreadable to the RP page (the hardware-boundary stand-in). The `dpop` plugin verifies
-those assertions itself and creates a normal Better Auth session bound to the signed key. Better Auth
+those assertions itself and creates a normal session bound to the signed key. The server
 owns users and sessions; the plugin adds the sender-constraint. See
 [../dpop-ext/SPEC.md](../dpop-ext/SPEC.md) for the extension itself.
 
 ## How the fix defeats the relay
 
 The compromised page relays the login assertion, which names the **victim's** `SK`. The attacker
-finishes and Better Auth mints a real session bound to that `SK` (`jkt`), but:
+finishes and the server mints a real session bound to that `SK` (`jkt`), but:
 
 - it cannot produce proofs - `SK` is sealed in the victim's authenticator (no exfiltration), and
 - it cannot point the binding at a key it holds - `SK_pub` rides in the **signed** `authenticatorData` (no substitution).

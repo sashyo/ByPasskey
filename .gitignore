@@ -14,5 +14,5 @@ videos/
 pocketid-demo/
 
 # stray SQLite files from older runs (the demo no longer uses a database)
-demos/betterauth-exploit/*.db
-demos/betterauth-exploit/*.db-journal
+demos/passkey-exploit/*.db
+demos/passkey-exploit/*.db-journal

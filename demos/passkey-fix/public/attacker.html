@@ -42,7 +42,7 @@
     <div class="pill" id="detail"></div>
   </div>
 
-  <div class="foot">Better Auth session &middot; dpop plugin decides whether it is usable</div>
+  <div class="foot">Session &middot; dpop plugin decides whether it is usable</div>
 </div>
 
 <script type="module">
@@ -66,7 +66,7 @@ async function poll() {
   if (!a || !a.assertion) return;
   armed = false;
 
-  // Finish the login with the victim's relayed assertion, minting a Better Auth session in THIS jar.
+  // Finish the login with the victim's relayed assertion, minting a session in THIS jar.
   const fin = await (await post(API + '/login/finish', { assertion: a.assertion, passkeyToken })).json();
   if (!fin.ok) { lock('Login finish rejected', fin.error || '(no detail)'); arm(); return; }
 

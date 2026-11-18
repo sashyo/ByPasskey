@@ -47,7 +47,7 @@ A second app on its own ports.
 1. Open **http://victim.localhost:1521/login** and **http://attacker.localhost:1523/attacker**, create an account + passkey
 2. **Sign in with passkey** - you land on **"Welcome"**. The fix works for the real user.
 3. **Simulate compromised page (relay my sign-in)** - the attacker tab shows **"Session captured,
-  but locked"**: the relay completes and Better Auth mints a session, but it is **inert**.
+  but locked"**: the relay completes and the server mints a session, but it is **inert**.
 
 ## Why the fix works
 
@@ -59,15 +59,15 @@ The key lives in the authenticator, **below the page**, so a page running the at
 neither read it (no exfiltration) nor point the binding at a key the attacker holds (no
 substitution). The relayed login still mints a session, but without the key it is inert.
 
-Details: [demos/betterauth-dpop/](demos/betterauth-dpop/) and the extension spec in
+Details: [demos/passkey-fix/](demos/passkey-fix/) and the extension spec in
 [demos/dpop-ext/SPEC.md](demos/dpop-ext/SPEC.md).
 
 ## What's here
 
 | Directory | What |
 |---|---|
-| [demos/betterauth-exploit/](demos/betterauth-exploit/) | **the exploit**: the passkey relay (ports 5411/5413) |
-| [demos/betterauth-dpop/](demos/betterauth-dpop/) | **the fix**: the same login with the `dpop` plugin (ports 1521/1523/1525) |
+| [demos/passkey-exploit/](demos/passkey-exploit/) | **the exploit**: the passkey relay (ports 5411/5413) |
+| [demos/passkey-fix/](demos/passkey-fix/) | **the fix**: the same login with the `dpop` plugin (ports 1521/1523/1525) |
 | [demos/dpop-ext/SPEC.md](demos/dpop-ext/SPEC.md) | the `dpop` WebAuthn extension spec and flow diagrams |
 
 Headless proof of the fix (no browser): `npm run fix:test`.
